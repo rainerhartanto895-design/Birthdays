@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Birthday, Angie!</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Poppins", sans-serif;
+    background: radial-gradient(ellipse at bottom, #050014 0%, #000000 100%);
+    color: white;
+    overflow-x: hidden;
+  }
+
+  /* 🌟 Bintang */
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: twinkle 2s infinite ease-in-out;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* ✨ Intro Page */
+  #intro {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(circle at center, #0b001f, #000000);
+    z-index: 10;
+    transition: opacity 1s ease;
+    padding: 0 5vw;
+  }
+
+  #intro h1 {
+    font-size: clamp(2em, 6vw, 3em);
+    text-shadow: 0 0 15px pink, 0 0 30px purple;
+    margin-bottom: 25px;
+  }
+
+  #startBtn {
+    padding: 12px 25px;
+    background: linear-gradient(45deg, #ff7ac3, #b76fff);
+    border: none;
+    color: white;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: clamp(1em, 2.5vw, 1.2em);
+    transition: transform 0.2s;
+  }
+  #startBtn:hover { transform: scale(1.1); }
+
+  /* 🎂 Main Page */
+  #main {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 4vh 5vw;
+    min-height: 100vh;
+  }
+
+  h1 {
+    font-size: clamp(1.8em, 3vw, 2.8em);
+    margin-top: 2vh;
+    text-shadow: 0 0 15px pink, 0 0 30px purple;
+  }
+.cake {
+  position: relative;
+  width: 260px;
+  height: 200px;
+}
+
+/* Warna natural sponge cake */
+.layer {
+  position: absolute;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+}
+
+.layer.bottom {
+  height: 60px;
+  bottom: 0;
+  background: linear-gradient(to bottom, #FF0000, #FF0000);
+  z-index: 1;
+}
+
+.layer.middle {
+  height: 55px;
+  bottom: 60px;
+  background: linear-gradient(to bottom, #c46a33, #8b3a14);
+  z-index: 2;
+}
+
+.layer.top {
+  height: 45px;
+  bottom: 115px;
+  background: linear-gradient(to bottom, #FFFFFF, #FFFFFF);
+  z-index: 3;
+}
+  /* 🔥 Lilin angka (tetap seperti aslinya) */
+  .number-candle {
+    position: absolute;
+    bottom: 160px; /* nempel di atas kue */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: clamp(2em, 4vw, 3em);
+    font-weight: bold;
+    color: #ffed75;
+    text-shadow: 0 0 15px orange, 0 0 25px yellow;
+    /* jangan ubah tampilan teks — kita hanya bungkus tiap digit */
+    display: inline-flex;
+    gap: 0.08em;
+    line-height: 1;
+  }
+
+  /* bungkus tiap digit agar api bisa diposisikan presisi */
+  .digit {
+    position: relative;
+    display: inline-block;
+    padding: 0 0.02em;
+  }
+
+  /* 🔥 Api di atas setiap angka (posisi relatif ke tiap digit) */
+.digit .flame {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -0.60em; /* 🔥 diturunkan biar nempel langsung di atas angka */
+  width: clamp(12px, 2vw, 16px);
+  height: clamp(18px, 3vh, 26px);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 60%, yellow, orange 70%, red 90%);
+  animation: flicker 0.32s infinite alternate;
+  z-index: 4;
+  pointer-events: none;
+  box-shadow: 0 0 10px rgba(255,150,0,0.6);
+}
+
+  @keyframes flicker {
+    from { transform: translateX(-50%) scale(1) translateY(0); opacity: 0.95; }
+    to   { transform: translateX(-50%) scale(1.08) translateY(-3px); opacity: 0.75; }
+  }
+
+  .instruction {
+    margin-top: 20px;
+    font-style: italic;
+    font-size: clamp(1em, 2vw, 1.2em);
+  }
+
+  /* 💌 Pesan */
+  .message-box {
+    margin-top: 30px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 15px;
+    padding: 20px;
+    width: min(90%, 600px);
+    box-shadow: 0 0 25px rgba(255,192,203,0.4);
+    text-align: left;
+  }
+
+  .message-box p {
+    font-size: clamp(1em, 2vw, 1.1em);
+    line-height: 1.6em;
+    white-space: pre-line;
+  }
+
+  /* 🎉 Confetti */
+  .confetti {
+    position: fixed;
+    width: 8px;
+    height: 12px;
+    border-radius: 2px;
+    animation: fall 5s linear forwards;
+    z-index: 9999;
+    opacity: 0.95;
+  }
+
+  @keyframes fall {
+    to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* 📱 Responsiveness: adjust vertical offset for smaller screens so api tetap di atas digit */
+  @media (max-width: 768px) {
+    .number-candle { bottom: 145px; }
+    .digit .flame { top: -1.35em; } /* api sedikit lebih dekat tapi tetap tidak menempel teks */
+  }
+
+  @media (max-height: 600px) {
+    .number-candle { bottom: 120px; }
+    .digit .flame { top: -1.1em; }
+  }
+</style>
+</head>
+
+<body>
+    
+  <!-- 🌠 Bintang -->
+  <script>
+    for(let i=0; i<80; i++){
+      let s=document.createElement("div");
+      s.className="star";
+      let size=Math.random()*2+1;
+      s.style.width=s.style.height=size+"px";
+      s.style.top=Math.random()*100+"%";
+      s.style.left=Math.random()*100+"%";
+      s.style.animationDelay=Math.random()*2+"s";
+      document.body.appendChild(s);
+    }
+  </script>
+
+  <!-- 🌈 Halaman Intro -->
+  <div id="intro">
+    <h1>🎉 Happy Birthday, Angie! 🎉</h1>
+    <button id="startBtn">Click to Begin 💖</button>
+  </div>
+
+  <!-- 🎂 Halaman utama -->
+  <div id="main">
+    <h1>🎂 Happy Birthday, Angie! 🎂</h1>
+
+    <div class="cake" id="cake">
+      <div class="layer bottom"></div>
+      <div class="layer middle"></div>
+      <div class="layer top"></div>
+      <!--
+        Tetap mempertahankan teks "18" seperti aslinya, tapi bungkus tiap digit
+        supaya kita bisa pasang 1 api di atas "1" dan 1 api di atas "8".
+        Ini perubahan minimal yang tidak mengubah tampilan teks.
+      -->
+      <div class="number-candle" aria-hidden="true">
+        <span class="digit">1<span class="flame"></span></span>
+        <span class="digit">8<span class="flame"></span></span>
+      </div>
+    </div>
+
+    <p class="instruction">Klik pada kue untuk meniup lilin 🕯️</p>
+
+    <div class="message-box">
+      <p>
+To: one and only princess from Meruya Angie 💖
+
+Selamat ulang tahun yang ke-18 🎂  
+Semoga sehat selalu, panjang umur, dan diberikan kekuatan serta kebahagiaan.  
+Semoga jadi pemimpin Teknik Elektro yang bijaksana dan berkarisma.  
+Hiduplah dengan baik di sana dan bahagialah , aku akan selalu menunggu di sini dengan baik.  
+Tungguin deh nanti ada bunga nyampe + hadiahnya 🎁  
+
+Terima kasih untuk semua dukungan dan kebaikanmu padaku.  
+I hope we can be best friends as long as we can 🤍  
+
+From: Prince Rainer
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // 🚀 Transisi Halaman (tetap sama)
+    document.getElementById("startBtn").addEventListener("click", () => {
+      const intro = document.getElementById("intro");
+      intro.style.opacity = "0";
+      setTimeout(() => {
+        intro.style.display = "none";
+        document.getElementById("main").style.display = "flex";
+      }, 1000);
+    });
+
+    // 💨 Tiup lilin + confetti
+    const cake = document.getElementById("cake");
+    cake.addEventListener("click", () => {
+      // hilangkan semua api
+      document.querySelectorAll('.digit .flame').forEach(f => f.remove());
+
+      // confetti muncul; lebih terlihat karena z-index tinggi dan posisi fixed
+      launchConfetti(90);
+
+      // notifikasi (boleh diubah/dihapus sesuai selera)
+      alert("Lilin sudah ditiup! Semoga harapanmu terkabul ✨");
+    });
+
+    // 🎉 Confetti sederhana (dari atas dan sedikit ledakan di tengah)
+    function launchConfetti(count) {
+      // sedikit ledakan dari tengah kue (opsional, membuat lebih dramatis)
+      const rect = document.getElementById('cake').getBoundingClientRect();
+      const centerX = rect.left + rect.width/2;
+      const startY = rect.top + 10;
+
+      for (let i = 0; i < count; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        // campur sumber: sebagian dari atas acak, sebagian dari sekitar kue (ledakan)
+        if (Math.random() < 0.35) {
+          c.style.left = (centerX + (Math.random()-0.5) * rect.width*1.2) + 'px';
+          c.style.top = (startY + (Math.random()-0.5) * 30) + 'px';
+        } else {
+          c.style.left = Math.random() * innerWidth + 'px';
+          c.style.top = '-20px';
+        }
+        c.style.background = `hsl(${Math.random() * 360}, 100%, 60%)`;
+        c.style.animationDuration = (2 + Math.random() * 2.5) + 's';
+        c.style.transform = `rotate(${Math.random() * 360}deg)`;
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4200);
+      }
+    }
+  </script>
+</body>
+</html>
