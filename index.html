@@ -110,22 +110,18 @@
   background: linear-gradient(to bottom, #FFFFFF, #FFFFFF);
   z-index: 3;
 }
-  /* 🔥 Lilin angka (tetap seperti aslinya) */
-  .number-candle {
-    position: absolute;
-    bottom: 160px; /* nempel di atas kue */
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: clamp(2em, 4vw, 3em);
-    font-weight: bold;
-    color: #ffed75;
-    text-shadow: 0 0 15px orange, 0 0 25px yellow;
-    /* jangan ubah tampilan teks — kita hanya bungkus tiap digit */
-    display: inline-flex;
-    gap: 0.08em;
-    line-height: 1;
-  }
-
+.number-candle {
+  position: absolute;
+  bottom: 100%; /* tepat di atas layer top */
+  left: 50%;
+  transform: translateX(-50%) translateY(-5px); /* geser sedikit ke atas */
+  font-size: clamp(2em, 4vw, 3em);
+  font-weight: bold;
+  color: #ffed75;
+  text-shadow: 0 0 15px orange, 0 0 25px yellow;
+  display: inline-flex;
+  gap: 0.08em;
+  line-height: 1;
   /* bungkus tiap digit agar api bisa diposisikan presisi */
   .digit {
     position: relative;
@@ -192,16 +188,14 @@
   @keyframes fall {
     to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
   }
-
-/* 📱 Opsional: Sesuaikan ukuran kue dan lilin di HP */
 @media (max-width: 768px) {
   .cake { width: 200px; height: 200px; }
-  .number-candle { font-size: 2em; bottom: 0; }
+  .number-candle { font-size: 2em; } /* jangan ubah bottom */
 }
 
 @media (max-height: 600px) {
   .cake { height: 180px; }
-  .number-candle { font-size: 1.8em; bottom: 0; }
+  .number-candle { font-size: 1.8em; } /* jangan ubah bottom */
 }
 
 </style>
@@ -242,11 +236,12 @@
         supaya kita bisa pasang 1 api di atas "1" dan 1 api di atas "8".
         Ini perubahan minimal yang tidak mengubah tampilan teks.
       -->
-      <div class="number-candle" aria-hidden="true">
-        <span class="digit">1<span class="flame"></span></span>
-        <span class="digit">8<span class="flame"></span></span>
-      </div>
-    </div>
+<div class="layer top">
+  <div class="number-candle" aria-hidden="true">
+    <span class="digit">1<span class="flame"></span></span>
+    <span class="digit">8<span class="flame"></span></span>
+  </div>
+</div>
 
     <p class="instruction">Klik pada kue untuk meniup lilin 🕯️</p>
 
@@ -320,4 +315,5 @@ From: Prince Rainer
   </script>
 </body>
 </html>
+
 
